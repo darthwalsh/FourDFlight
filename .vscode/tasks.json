@@ -18,10 +18,10 @@
 	"isShellCommand": true,
 
 	// Show the output window only if unrecognized errors occur.
-	"showOutput": "never",
+	"showOutput": "silent",
 
 	// args is the HelloWorld program to compile.
-	"args": ["main.ts"],
+	"args": [],
 
 	// use the standard tsc problem matcher to find compile problems
 	// in the output.

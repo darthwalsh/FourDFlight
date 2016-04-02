@@ -1,6 +1,6 @@
 class Startup {
     public static main(): number {
-        console.log('Hello World');
+        console.log('Hello Carl2');
         return 0;
     }
 }
