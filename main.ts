@@ -1,8 +1,15 @@
-class Startup {
-    public static main(): number {
-        console.log('Hello Carl2');
-        return 0;
+function $ (id) { return document.getElementById(id); }
+function create(tag, attr) { 
+  var el = document.createElement(tag);
+  if (attr) {
+    for (var key in attr) {
+      el[key] = attr[key];
     }
+  }
+  return el; 
 }
 
-Startup.main();
+window.onload = function() {
+  var div = $("div");
+  div.appendChild(create("p", { textContent: "Hello world" }));
+};
