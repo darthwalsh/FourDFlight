@@ -9,7 +9,7 @@ function create(tag, attr) {
 }
 
 var player = {
-  color: "#00A",
+  color: "#00FFFF",
   x: 220,
   y: 270,
   width: 32,
@@ -34,14 +34,27 @@ $(document).bind("keyup", function(event) {
   keydown[keyName(event)] = false;
 });
 
-function update() {
-  if (keydown.left) {
-    player.x -= 2;
-  }
+function clamp(num, min, max) {
+  return num < min ? min : num > max ? max : num;
+}
 
-  if (keydown.right) {
-    player.x += 2;
+function update() {
+  var speed = 20;
+  if (keydown.left) {
+    player.x -= speed;
   }
+  if (keydown.right) {
+    player.x += speed;
+  }
+  if (keydown.up) {
+    player.y -= speed;
+  }
+  if (keydown.down) {
+    player.y += speed;
+  }
+  
+  player.x = clamp(player.x, 0, canvas.width - player.width);
+  player.y = clamp(player.y, 0, canvas.height - player.height);
 }
 
 function draw() {
@@ -49,11 +62,35 @@ function draw() {
   player.draw();
 }
 
+function resize() {
+  canvas.width  = document.body.clientWidth;
+  canvas.height = document.body.clientHeight;
+}
+
+var resizing = false;
+var lastResize = 0;
+function onResize() {
+  clearTimeout(lastResize);
+  lastResize = setTimeout(resize, 100);
+  
+  if (!resizing) {
+    resize();
+    resizing = true;
+    setTimeout(function () {
+      resizing = false;
+    }, 100);
+  }
+}
+
 var canvas : HTMLCanvasElement;
 var ctx : CanvasRenderingContext2D;
 
 window.onload = function() {
-  canvas = <HTMLCanvasElement><any>$('canvas')[0];
+  canvas = <HTMLCanvasElement>$('canvas')[0];
+  resize();
+  window.addEventListener('resize', onResize, false);
+  
+  canvas.style.background = 'black';
   ctx = canvas.getContext('2d');
   
   var FPS = 30;
