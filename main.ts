@@ -28,6 +28,7 @@ function resize() {
 
 function draw() {
   TopDownView.Draw(canvas, ctx, game);
+  ctx.fillStyle = "#00FFFF";
   ctx.fillText(game.points.toString(), 10, 30);
 }
 
@@ -58,7 +59,7 @@ window.onload = function() {
   ctx = canvas.getContext('2d');
   ctx.font = '30px Verdana';
   
-  var FPS = 30;
+  var FPS = 60;
   setInterval(function() {
     game.update(keydown);
     draw();

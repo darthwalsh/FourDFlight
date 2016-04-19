@@ -7,11 +7,11 @@ module TopDownView {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
   ctx.beginPath();
-  ctx.fillStyle = game.goal.color;
+  ctx.fillStyle = "#0000FF";
   DrawCircle(ctx, game.goal.place);
   
   ctx.beginPath();
-  ctx.fillStyle = game.player.color;
+  ctx.fillStyle = "#00FFFF";
   DrawCircle(ctx, game.player.place);
  }
 

@@ -17,15 +17,12 @@ module World {
   }
  }
 
- //TODO no color
  export class Player {
-  color = "#00FFFF";
   place: NSphere;
  }
 
  // TODO should pulse bright and dark
  export class Goal {
-  color = "#0000FF";
   place: NSphere;
  }
 
@@ -58,6 +55,7 @@ module World {
   player = new Player();
   goal = new Goal();
   points = 0;
+  tick = 0;
   
   constructor() {
    this.player.place = new World.NSphere(new World.Point(100, 100), 20);
@@ -66,7 +64,12 @@ module World {
   }
   
   update(keydown: any) {
-   var speed = 20;
+   ++this.tick;
+   const tickFactor = 80;
+   this.goal.place.size = 40 - 
+     Math.abs((this.tick % (2*tickFactor)) - tickFactor) / 4;
+   
+   var speed = 10;
    if (keydown.left) {
      this.player.place.loc.locs[0] -= speed;
    }
