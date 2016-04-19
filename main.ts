@@ -1,24 +1,11 @@
-function create(tag, attr) { 
-  var el = document.createElement(tag);
-  if (attr) {
-    for (var key in attr) {
-      el[key] = attr[key];
-    }
-  }
-  return el; 
-}
+/// <reference path="world.ts" />
+/// <reference path="topDownView.ts" />
 
-var player = {
-  color: "#00FFFF",
-  x: 220,
-  y: 270,
-  width: 32,
-  height: 32,
-  draw: function() {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-  }
-};
+var player = new World.Player();
+player.place = new World.NSphere(new World.Point(100, 100), 20);
+
+var goal = new World.Goal();
+goal.place = new World.NSphere(new World.Point(300, 300), 30);
 
 var keydown: any = {};
 function keyName(event) {
@@ -41,25 +28,22 @@ function clamp(num, min, max) {
 function update() {
   var speed = 20;
   if (keydown.left) {
-    player.x -= speed;
+    player.place.loc.locs[0] -= speed;
   }
   if (keydown.right) {
-    player.x += speed;
+    player.place.loc.locs[0] += speed;
   }
   if (keydown.up) {
-    player.y -= speed;
+    player.place.loc.locs[1] -= speed;
   }
   if (keydown.down) {
-    player.y += speed;
+    player.place.loc.locs[1] += speed;
   }
   
-  player.x = clamp(player.x, 0, canvas.width - player.width);
-  player.y = clamp(player.y, 0, canvas.height - player.height);
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  player.draw();
+  player.place.loc.locs[0] = clamp(
+    player.place.loc.locs[0], 0, canvas.width - player.place.size * 2);
+  player.place.loc.locs[1] = clamp(
+    player.place.loc.locs[1], 0, canvas.height - player.place.size * 2);
 }
 
 function resize() {
@@ -82,8 +66,8 @@ function onResize() {
   }
 }
 
-var canvas : HTMLCanvasElement;
-var ctx : CanvasRenderingContext2D;
+var canvas: HTMLCanvasElement;
+var ctx: CanvasRenderingContext2D;
 
 window.onload = function() {
   canvas = <HTMLCanvasElement>$('canvas')[0];
@@ -96,6 +80,6 @@ window.onload = function() {
   var FPS = 30;
   setInterval(function() {
     update();
-    draw();
+    TopDownView.Draw(canvas, ctx, player, goal);
   }, 1000/FPS);
 };
