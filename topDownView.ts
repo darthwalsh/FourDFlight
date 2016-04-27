@@ -16,7 +16,9 @@ module TopDownView {
  }
 
  function DrawCircle(ctx: CanvasRenderingContext2D, s: World.NSphere) {
-  ctx.arc(s.loc.locs[0], s.loc.locs[1], s.size, 0, 2 * Math.PI);
+  var x = s.loc.locs[0]
+  var y = s.loc.locs[1] || this.canvas.height / 2;
+  ctx.arc(x, y, s.size, 0, 2 * Math.PI);
   ctx.fill();
  }
 }

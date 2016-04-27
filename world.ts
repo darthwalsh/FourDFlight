@@ -21,7 +21,6 @@ module World {
   place: NSphere;
  }
 
- // TODO should pulse bright and dark
  export class Goal {
   place: NSphere;
  }
@@ -40,7 +39,7 @@ module World {
   let bLocs = b.locs;
   
   if (aLocs.length != bLocs.length)
-    throw ".length";
+    assertThrow(".length");
   
   //dist = sqrt((ax - bx)^2 + (ay - by)^2 + ...)
   let sum = 0;
@@ -54,13 +53,25 @@ module World {
  export class Game {
   player = new Player();
   goal = new Goal();
+  dim: number;
   points = 0;
   tick = 0;
   
-  constructor() {
-   this.player.place = new World.NSphere(new World.Point(100, 100), 20);
-   this.goal.place = new World.NSphere(new World.Point(100, 100), 30);
+  constructor(dim: number) {
+   this.dim = dim;
+   
+   var loc: number[] = [];
+   for (var d = 0; d < dim; ++d) {
+     loc.push(100);
+   }
+    
+   this.player.place = new World.NSphere(new World.Point(...loc.slice(0)), 20);
+   this.goal.place = new World.NSphere(new World.Point(...loc.slice(0)), 30);
    this.moveGoal();
+  }
+  
+  clamp(num, min, max) {
+    return num < min ? min : num > max ? max : num;
   }
   
   update(keydown: any) {
@@ -76,17 +87,19 @@ module World {
    if (keydown.right) {
      this.player.place.loc.locs[0] += speed;
    }
-   if (keydown.up) {
-     this.player.place.loc.locs[1] -= speed;
-   }
-   if (keydown.down) {
-     this.player.place.loc.locs[1] += speed;
-   }
-   
-   this.player.place.loc.locs[0] = clamp(
+   this.player.place.loc.locs[0] = this.clamp(
      this.player.place.loc.locs[0], this.player.place.size, canvas.width - this.player.place.size);
-   this.player.place.loc.locs[1] = clamp(
-     this.player.place.loc.locs[1], this.player.place.size, canvas.height - this.player.place.size);
+   
+   if (this.dim >= 2) { 
+    if (keydown.up) {
+      this.player.place.loc.locs[1] -= speed;
+    }
+    if (keydown.down) {
+      this.player.place.loc.locs[1] += speed;
+    }
+    this.player.place.loc.locs[1] = this.clamp(
+      this.player.place.loc.locs[1], this.player.place.size, canvas.height - this.player.place.size);
+   }
      
    if (intersects(this.goal.place, this.player.place)) {
     ++this.points;
@@ -95,13 +108,15 @@ module World {
   }
   
   private moveGoal() {
-   const width = 1000;
-   const height = 700; //TODO
+   const width = 500; //TODO
    
-   this.goal.place.loc.locs[0] = Math.floor(Math.random() * width);
-   this.goal.place.loc.locs[1] = Math.floor(Math.random() * height);
+   var goal = this.goal.place;
    
-   if (distance(this.goal.place.loc, this.player.place.loc) < 100) {
+   for (var d = 0; d < goal.loc.locs.length; ++d) {
+     goal.loc.locs[d] = Math.floor(Math.random() * width);
+   }
+   
+   if (distance(goal.loc, this.player.place.loc) < 100) {
     this.moveGoal();
    }
   }
