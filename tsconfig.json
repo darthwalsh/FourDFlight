@@ -3,6 +3,7 @@
         "target": "es5",
         "sourceMap": true,
         "outFile": "./build.js",
-        "watch": true
+        "watch": true,
+        "noEmitOnError": true
     }
 }
