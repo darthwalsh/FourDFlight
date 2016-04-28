@@ -1,42 +1,21 @@
 module World {
- export class Point {
-  locs: number[];
-  
-  constructor(...l: number[]) {
-   this.locs = l;
-  }
- }
-
- export class NSphere {
-  loc: Point;
+ export class Shape {
   size: number;
+  loc: number[];
   
-  constructor(l: Point, s: number) {
-   this.loc = l;
+  constructor(s: number, ...l: number[]) {
    this.size = s;
+   this.loc = l;
   }
  }
 
- export class Player {
-  place: NSphere;
- }
-
- export class Goal {
-  place: NSphere;
- }
-
- export class Obstacle {
-  color = "#FF0000";
-  place: NSphere;
- }
-
- function intersects(a: NSphere, b: NSphere): boolean {
-  return distance(a.loc, b.loc) < a.size + b.size;
+ function intersects(a: Shape, b: Shape): boolean {
+  return distance(a, b) < a.size + b.size;
  }
  
- function distance(a: Point, b: Point): number {
-  let aLocs = a.locs;
-  let bLocs = b.locs;
+ function distance(a: Shape, b: Shape): number {
+  let aLocs = a.loc;
+  let bLocs = b.loc;
   
   if (aLocs.length != bLocs.length)
     assertThrow(".length");
@@ -51,8 +30,8 @@ module World {
  }
  
  export class Game {
-  player = new Player();
-  goal = new Goal();
+  player: Shape;
+  goal: Shape;
   dim: number;
   points = 0;
   tick = 0;
@@ -65,8 +44,8 @@ module World {
      loc.push(100);
    }
     
-   this.player.place = new World.NSphere(new World.Point(...loc.slice(0)), 20);
-   this.goal.place = new World.NSphere(new World.Point(...loc.slice(0)), 30);
+   this.player = new World.Shape(20, ...loc.slice(0));
+   this.goal = new World.Shape(30, ...loc.slice(0));
    this.moveGoal();
   }
   
@@ -77,31 +56,31 @@ module World {
   update(keydown: any) {
    ++this.tick;
    const tickFactor = 80;
-   this.goal.place.size = 40 - 
+   this.goal.size = 40 - 
      Math.abs((this.tick % (2*tickFactor)) - tickFactor) / 4;
    
    var speed = 10;
    if (keydown.left) {
-     this.player.place.loc.locs[0] -= speed;
+     this.player.loc[0] -= speed;
    }
    if (keydown.right) {
-     this.player.place.loc.locs[0] += speed;
+     this.player.loc[0] += speed;
    }
-   this.player.place.loc.locs[0] = this.clamp(
-     this.player.place.loc.locs[0], this.player.place.size, canvas.width - this.player.place.size);
+   this.player.loc[0] = this.clamp(
+     this.player.loc[0], this.player.size, canvas.width - this.player.size);
    
    if (this.dim >= 2) { 
     if (keydown.up) {
-      this.player.place.loc.locs[1] -= speed;
+      this.player.loc[1] -= speed;
     }
     if (keydown.down) {
-      this.player.place.loc.locs[1] += speed;
+      this.player.loc[1] += speed;
     }
-    this.player.place.loc.locs[1] = this.clamp(
-      this.player.place.loc.locs[1], this.player.place.size, canvas.height - this.player.place.size);
+    this.player.loc[1] = this.clamp(
+      this.player.loc[1], this.player.size, canvas.height - this.player.size);
    }
      
-   if (intersects(this.goal.place, this.player.place)) {
+   if (intersects(this.goal, this.player)) {
     ++this.points;
     this.moveGoal();
    }
@@ -110,13 +89,11 @@ module World {
   private moveGoal() {
    const width = 500; //TODO
    
-   var goal = this.goal.place;
-   
-   for (var d = 0; d < goal.loc.locs.length; ++d) {
-     goal.loc.locs[d] = Math.floor(Math.random() * width);
+   for (var d = 0; d < this.goal.loc.length; ++d) {
+     this.goal.loc[d] = Math.floor(Math.random() * width);
    }
    
-   if (distance(goal.loc, this.player.place.loc) < 100) {
+   if (distance(this.goal, this.player) < 100) {
     this.moveGoal();
    }
   }
