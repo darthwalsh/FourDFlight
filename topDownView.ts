@@ -17,7 +17,7 @@ module TopDownView {
 
  function DrawCircle(ctx: CanvasRenderingContext2D, s: World.Shape) {
   var x = s.loc[0]
-  var y = s.loc.length >= 1 ? s.loc[1] : this.canvas.height / 2;
+  var y = s.loc.length > 1 ? s.loc[1] : this.canvas.height / 2;
   ctx.arc(x, y, s.size, 0, 2 * Math.PI);
   ctx.fill();
  }
