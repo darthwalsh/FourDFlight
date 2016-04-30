@@ -104,6 +104,7 @@ window.onload = function() {
   canvas.parentElement.appendChild(levelChoiceDiv);
   
   window.onhashchange = onHashChange;
+  onHashChange(null);
     
   var FPS = 60;
   setInterval(function() {
