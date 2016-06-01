@@ -31,6 +31,7 @@ module World {
  
  export class Game {
   player: Shape;
+  angle: number;
   goal: Shape;
   dim: number;
   points = 0;
@@ -38,15 +39,18 @@ module World {
   
   constructor(dim: number) {
    this.dim = dim;
-   
-   var loc: number[] = [];
-   for (var d = 0; d < dim; ++d) {
-     loc.push(100);
-   }
-    
-   this.player = new World.Shape(20, ...loc.slice(0));
-   this.goal = new World.Shape(30, ...loc.slice(0));
+   this.player = new World.Shape(20, ...this.makeArray(100));
+   this.angle = 0;
+   this.goal = new World.Shape(30, ...this.makeArray(100));
    this.moveGoal();
+  }
+  
+  makeArray(n: number) {
+    var arr: number[] = [];
+    for (var d = 0; d < this.dim; ++d) {
+      arr.push(n);
+    }
+    return arr;
   }
   
   clamp(num, min, max) {
@@ -59,24 +63,49 @@ module World {
    this.goal.size = 40 - 
      Math.abs((this.tick % (2*tickFactor)) - tickFactor) / 4;
    
+   var delta = this.makeArray(0);
+   
    var speed = 10;
+   var turnSpeed = 5;
    if (keydown.left) {
-     this.player.loc[0] -= speed;
+     delta[0] -= speed;
    }
    if (keydown.right) {
-     this.player.loc[0] += speed;
+     delta[0] += speed;
    }
-   this.player.loc[0] = this.clamp(
-     this.player.loc[0], this.player.size, canvas.width - this.player.size);
    
    if (this.dim >= 2) { 
     if (keydown.up) {
-      this.player.loc[1] -= speed;
+      delta[1] -= speed;
     }
     if (keydown.down) {
-      this.player.loc[1] += speed;
+      delta[1] += speed;
     }
-    this.player.loc[1] = this.clamp(
+    
+    if (keydown.a) {
+      this.angle += turnSpeed;
+    }    
+    if (keydown.d) {
+      this.angle -= turnSpeed;
+    }
+   
+    // Transform 
+    // TODO should be rotation matrix
+    var angleRad = this.angle * Math.PI / 180;
+    var newDelta = this.makeArray(0);
+    newDelta[0] = Math.cos(angleRad) * delta[0] + Math.sin(angleRad) * delta[1];
+    newDelta[1] = -Math.sin(angleRad) * delta[0] + Math.cos(angleRad) * delta[1];
+    delta = newDelta;
+   }
+      
+   for (var i = 0; i < this.dim; ++i) {
+     this.player.loc[i] += delta[i];
+   }   
+   
+   this.player.loc[0] = this.clamp(
+     this.player.loc[0], this.player.size, canvas.width - this.player.size);
+   if (this.dim >= 2) { 
+     this.player.loc[1] = this.clamp(
       this.player.loc[1], this.player.size, canvas.height - this.player.size);
    }
      
