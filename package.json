@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "build.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "jasmine": "^2.5.3"
+    "jasmine": "^2.5.3",
+    "jasmine-core": "^2.5.2"
   },
   "scripts": {
     "test": "jasmine"

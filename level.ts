@@ -1,7 +1,7 @@
 /// <reference path="world.ts" />
 
 module Level {
-  function GetSurface(dim: number, level: number): World.Shape[] {
+  export function GetSurface(dim: number, level: number): number[][] {
 
     throw "not implemented";
   }
