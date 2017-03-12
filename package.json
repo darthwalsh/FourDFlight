@@ -1,0 +1,24 @@
+{
+  "name": "fourdflight",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "jasmine": "^2.5.3"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darthwalsh/FourDFlight.git"
+  },
+  "author": "Carl Walsh",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/darthwalsh/FourDFlight/issues"
+  },
+  "homepage": "https://github.com/darthwalsh/FourDFlight#readme"
+}
