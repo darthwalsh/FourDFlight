@@ -1,8 +1,48 @@
 /// <reference path="world.ts" />
 
 module Level {
-  function GetSurface(dim: number, level: number): World.Shape[] {
+  export function GetSurface(dim: number, level: number): number[][] {
+    let set : number[] = [];
+    for (let i = level; i >= -level; i -= 2) {
+      set.push(i);
+    }
+    return [];
+  }
 
-    throw "not implemented";
+  function Permutations<T>(arr: T[], until: number): T[][] {
+    if (until == arr.length) {
+      return [[]]; 
+    }
+    const toInsert = arr[until];
+    let rec = Permutations(arr, until + 1);
+    let ans: T[][] = [];
+    for (let r of rec) {
+      for (let i = 0; i <= r.length; ++i) {
+        let insert = r.slice();
+        insert.splice(i, 0, toInsert);
+        ans.push(insert);
+      }
+    }
+    return ans;
+  }
+
+  export function Test() {
+    console.log(JSON.stringify(Permutations([1,2,3], 0)));
+
+    const expected = [
+      {d:1, l:1, e:[[-1], [1]]},
+      {d:1, l:2, e:[[-2], [2]]},
+    ]
+
+    for (let i of expected) {
+      let actual = GetSurface(i.d, i.l);
+      AreEqual(i.e, actual);
+    }
+  }
+
+  function AreEqual(expected: any, actual: any) {
+    expected = JSON.stringify(expected);
+    actual = JSON.stringify(actual);
+    console.assert(expected === actual, `${expected} !== ${actual}`)
   }
 }
