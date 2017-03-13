@@ -9,25 +9,24 @@ module Level {
     return [];
   }
 
-  function Permutations<T>(arr: T[], until: number): T[][] {
-    if (until == arr.length) {
+  function MultiPermutations<T>(arr: T[], count: number): T[][] {
+    if (count == 0) {
       return [[]]; 
     }
-    const toInsert = arr[until];
-    let rec = Permutations(arr, until + 1);
+    let rec = MultiPermutations(arr, count - 1);
     let ans: T[][] = [];
     for (let r of rec) {
-      for (let i = 0; i <= r.length; ++i) {
-        let insert = r.slice();
-        insert.splice(i, 0, toInsert);
-        ans.push(insert);
+      for (let e of arr) {
+        let copy = r.slice();
+        copy.push(e);
+        ans.push(copy);
       }
     }
     return ans;
   }
 
   export function Test() {
-    console.log(JSON.stringify(Permutations([1,2,3], 0)));
+    console.log(JSON.stringify(MultiPermutations([0,1], 3)));
 
     const expected = [
       {d:1, l:1, e:[[-1], [1]]},
