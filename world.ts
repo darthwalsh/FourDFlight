@@ -53,10 +53,6 @@ module World {
     return arr;
   }
   
-  clamp(num, min, max) {
-    return num < min ? min : num > max ? max : num;
-  }
-  
   update(keydown: any) {
    ++this.tick;
    const tickFactor = 80;
@@ -100,13 +96,6 @@ module World {
       
    for (var i = 0; i < this.dim; ++i) {
      this.player.loc[i] += delta[i];
-   }   
-   
-   this.player.loc[0] = this.clamp(
-     this.player.loc[0], this.player.size, canvas.width - this.player.size);
-   if (this.dim >= 2) { 
-     this.player.loc[1] = this.clamp(
-      this.player.loc[1], this.player.size, canvas.height - this.player.size);
    }
      
    if (intersects(this.goal, this.player)) {
