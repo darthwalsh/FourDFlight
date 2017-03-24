@@ -1,4 +1,5 @@
 /// <reference path="level.ts" />
+/// <reference path="matrix.ts" />
 
 module World {
   export class Shape {
@@ -33,7 +34,6 @@ module World {
 
   export class Game {
     player: Shape;
-    angle: number;
     goals: Shape[];
     dim: number;
     level = 1;
@@ -42,7 +42,6 @@ module World {
     constructor(dim: number) {
       this.dim = dim;
       this.player = new Shape(20, ...this.makeArray(0));
-      this.angle = 0;
       this.updateGoal();
     }
 
@@ -62,7 +61,7 @@ module World {
 
       let delta = this.makeArray(0);
 
-      let speed = 10;
+      let speed = -10;
       let turnSpeed = 5;
       if (keydown.left) {
         delta[0] -= speed;
@@ -79,24 +78,28 @@ module World {
           delta[1] += speed;
         }
 
+        let angle = 0;
         if (keydown.a) {
-          this.angle += turnSpeed;
+          angle += turnSpeed;
         }
         if (keydown.d) {
-          this.angle -= turnSpeed;
+          angle -= turnSpeed;
         }
 
         // Transform 
-        // TODO should be rotation matrix
-        let angleRad = this.angle * Math.PI / 180;
-        let newDelta = this.makeArray(0);
-        newDelta[0] = Math.cos(angleRad) * delta[0] + Math.sin(angleRad) * delta[1];
-        newDelta[1] = -Math.sin(angleRad) * delta[0] + Math.cos(angleRad) * delta[1];
-        delta = newDelta;
+        let angleRad = angle * Math.PI / 180;
+        var transform = Matrix.From([
+          [Math.cos(angleRad), Math.sin(angleRad)],
+          [-Math.sin(angleRad), Math.cos(angleRad)]
+        ])
+        var vector = Matrix.From(delta.map(n => [n]));
+        delta = transform.mul(vector).n[0];
       }
 
       for (let i = 0; i < this.dim; ++i) {
-        this.player.loc[i] += delta[i];
+        for (let g of this.goals) {
+          g.loc[i] += delta[i];
+        }
       }
 
       for (let i = this.goals.length - 1; i >= 0; --i) {
