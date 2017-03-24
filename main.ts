@@ -16,13 +16,8 @@ function keyName(event) {
     String.fromCharCode(event.which).toLowerCase();
 }
 
-$(document).bind("keydown", function (event) {
-  keydown[keyName(event)] = true;
-});
-
-$(document).bind("keyup", function (event) {
-  keydown[keyName(event)] = false;
-});
+$(document).bind("keydown", event => keydown[keyName(event)] = true);
+$(document).bind("keyup", event => keydown[keyName(event)] = false);
 
 function resize() {
   canvas.width = document.body.clientWidth;
@@ -46,9 +41,7 @@ function onResize() {
   if (!resizing) {
     resize();
     resizing = true;
-    setTimeout(function () {
-      resizing = false;
-    }, 100);
+    setTimeout(() => resizing = false, 100);
   }
 }
 
@@ -83,7 +76,7 @@ var canvas: HTMLCanvasElement;
 var ctx: CanvasRenderingContext2D;
 var levelChoiceDiv: HTMLDivElement;
 
-window.onload = function () {
+window.onload = () => {
   canvas = <HTMLCanvasElement>$('canvas')[0];
   resize();
   window.addEventListener('resize', onResize, false);
@@ -107,7 +100,7 @@ window.onload = function () {
   onHashChange(null);
 
   var FPS = 60;
-  setInterval(function () {
+  setInterval(() => {
     if (game) game.update(keydown);
     draw();
   }, 1000 / FPS);
