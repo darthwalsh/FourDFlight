@@ -7,10 +7,10 @@ function assertThrow(message: string) {
   throw message;
 }
 
-var game: World.Game;
-var drawer: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: World.Game) => void;
+let game: World.Game;
+let drawer: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: World.Game) => void;
 
-var keydown: any = {};
+let keydown: any = {};
 function keyName(event) {
   return (<any>jQuery).hotkeys.specialKeys[event.which] ||
     String.fromCharCode(event.which).toLowerCase();
@@ -32,8 +32,8 @@ function draw() {
   }
 }
 
-var resizing = false;
-var lastResize = 0;
+let resizing = false;
+let lastResize = 0;
 function onResize() {
   clearTimeout(lastResize);
   lastResize = setTimeout(resize, 100);
@@ -45,14 +45,14 @@ function onResize() {
   }
 }
 
-var level = "";
-var levels = {
+let level = "";
+let levels = {
   "1d": TopDownView.Draw,
   "2d": TopDownView.Draw
 };
 
 function onHashChange(ev: HashChangeEvent) {
-  var hash = window.location.hash.substring(1);
+  let hash = window.location.hash.substring(1);
 
   if (hash === "") {
     level = "";
@@ -72,9 +72,9 @@ function onHashChange(ev: HashChangeEvent) {
   levelChoiceDiv.style.display = 'none';
 }
 
-var canvas: HTMLCanvasElement;
-var ctx: CanvasRenderingContext2D;
-var levelChoiceDiv: HTMLDivElement;
+let canvas: HTMLCanvasElement;
+let ctx: CanvasRenderingContext2D;
+let levelChoiceDiv: HTMLDivElement;
 
 window.onload = () => {
   canvas = <HTMLCanvasElement>$('canvas')[0];
@@ -86,7 +86,7 @@ window.onload = () => {
   ctx.font = '60px Verdana';
 
   levelChoiceDiv = document.createElement("div");
-  for (var key in levels) {
+  for (let key in levels) {
     let button = document.createElement("button");
     button.innerText = key;
     button.onclick = function (ev) { window.location.hash = this.innerText; };
@@ -99,7 +99,7 @@ window.onload = () => {
   window.onhashchange = onHashChange;
   onHashChange(null);
 
-  var FPS = 60;
+  let FPS = 60;
   setInterval(() => {
     if (game) game.update(keydown);
     draw();

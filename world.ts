@@ -24,7 +24,7 @@ module World {
 
     //dist = sqrt((ax - bx)^2 + (ay - by)^2 + ...)
     let sum = 0;
-    for (var i = 0; i < aLocs.length; ++i) {
+    for (let i = 0; i < aLocs.length; ++i) {
       let diff = aLocs[i] - bLocs[i];
       sum += diff * diff;
     }
@@ -47,8 +47,8 @@ module World {
     }
 
     makeArray(n: number) {
-      var arr: number[] = [];
-      for (var d = 0; d < this.dim; ++d) {
+      let arr: number[] = [];
+      for (let d = 0; d < this.dim; ++d) {
         arr.push(n);
       }
       return arr;
@@ -60,10 +60,10 @@ module World {
       this.goals.forEach(goal => goal.size = 40 -
         Math.abs((this.tick % (2 * tickFactor)) - tickFactor) / 4);
 
-      var delta = this.makeArray(0);
+      let delta = this.makeArray(0);
 
-      var speed = 10;
-      var turnSpeed = 5;
+      let speed = 10;
+      let turnSpeed = 5;
       if (keydown.left) {
         delta[0] -= speed;
       }
@@ -88,18 +88,18 @@ module World {
 
         // Transform 
         // TODO should be rotation matrix
-        var angleRad = this.angle * Math.PI / 180;
-        var newDelta = this.makeArray(0);
+        let angleRad = this.angle * Math.PI / 180;
+        let newDelta = this.makeArray(0);
         newDelta[0] = Math.cos(angleRad) * delta[0] + Math.sin(angleRad) * delta[1];
         newDelta[1] = -Math.sin(angleRad) * delta[0] + Math.cos(angleRad) * delta[1];
         delta = newDelta;
       }
 
-      for (var i = 0; i < this.dim; ++i) {
+      for (let i = 0; i < this.dim; ++i) {
         this.player.loc[i] += delta[i];
       }
 
-      for (var i = this.goals.length - 1; i >= 0; --i) {
+      for (let i = this.goals.length - 1; i >= 0; --i) {
         if (intersects(this.goals[i], this.player)) {
           this.goals.splice(i, 1);
         }
@@ -115,7 +115,7 @@ module World {
     private updateGoal() {
       const width = 100;
 
-      var surface = Level.GetSurface(this.dim, this.level);
+      let surface = Level.GetSurface(this.dim, this.level);
       this.goals = surface.map(arr => new Shape(30, ...(arr.map(i => width * i))));
     }
   }
