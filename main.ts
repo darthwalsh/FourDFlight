@@ -33,7 +33,7 @@ function draw() {
   if (game) {
     drawer(canvas, ctx, game);
     ctx.fillStyle = "#00FFFF";
-    ctx.fillText(game.points.toString(), 10, 30);
+    ctx.fillText(game.level.toString(), 10, 30);
   }  
 }
 

@@ -1,3 +1,5 @@
+/// <reference path="level.ts" />
+
 module World {
  export class Shape {
   size: number;
@@ -32,17 +34,16 @@ module World {
  export class Game {
   player: Shape;
   angle: number;
-  goal: Shape;
+  goals: Shape[];
   dim: number;
-  points = 0;
+  level = 1;
   tick = 0;
   
   constructor(dim: number) {
    this.dim = dim;
    this.player = new World.Shape(20, ...this.makeArray(100));
    this.angle = 0;
-   this.goal = new World.Shape(30, ...this.makeArray(100));
-   this.moveGoal();
+   this.updateGoal();
   }
   
   makeArray(n: number) {
@@ -56,8 +57,8 @@ module World {
   update(keydown: any) {
    ++this.tick;
    const tickFactor = 80;
-   this.goal.size = 40 - 
-     Math.abs((this.tick % (2*tickFactor)) - tickFactor) / 4;
+   this.goals.forEach(goal => goal.size = 40 - 
+     Math.abs((this.tick % (2*tickFactor)) - tickFactor) / 4);
    
    var delta = this.makeArray(0);
    
@@ -97,23 +98,25 @@ module World {
    for (var i = 0; i < this.dim; ++i) {
      this.player.loc[i] += delta[i];
    }
-     
-   if (intersects(this.goal, this.player)) {
-    ++this.points;
-    this.moveGoal();
+   
+   for (var i = this.goals.length - 1; i >= 0 ; --i) {
+      if (intersects(this.goals[i], this.player)) {
+        this.goals.splice(i, 1);
+      }
    }
+
+   if (this.goals.length == 0) {
+      ++this.level;
+      this.updateGoal();
+   }
+
   }
   
-  private moveGoal() {
-   const width = 500; //TODO
+  private updateGoal() {
+   const width = 100;
    
-   for (var d = 0; d < this.goal.loc.length; ++d) {
-     this.goal.loc[d] = Math.floor(Math.random() * width);
-   }
-   
-   if (distance(this.goal, this.player) < 100) {
-    this.moveGoal();
-   }
+   var surface = Level.GetSurface(this.dim, this.level);
+   this.goals = surface.map(arr => new Shape(30, ...(arr.map(i => width * i))));
   }
  }
 }
