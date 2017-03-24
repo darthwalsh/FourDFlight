@@ -41,7 +41,7 @@ module World {
   
   constructor(dim: number) {
    this.dim = dim;
-   this.player = new World.Shape(20, ...this.makeArray(100));
+   this.player = new World.Shape(20, ...this.makeArray(0));
    this.angle = 0;
    this.updateGoal();
   }

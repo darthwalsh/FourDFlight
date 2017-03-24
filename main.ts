@@ -33,7 +33,7 @@ function draw() {
   if (game) {
     drawer(canvas, ctx, game);
     ctx.fillStyle = "#00FFFF";
-    ctx.fillText(game.level.toString(), 10, 30);
+    ctx.fillText(game.level.toString(), 10, 60);
   }  
 }
 
@@ -90,7 +90,7 @@ window.onload = function() {
   
   canvas.style.background = 'black';
   ctx = canvas.getContext('2d');
-  ctx.font = '30px Verdana';
+  ctx.font = '60px Verdana';
   
   levelChoiceDiv = document.createElement("div");
   for (var key in levels) {
