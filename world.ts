@@ -92,8 +92,10 @@ module World {
           [Math.cos(angleRad), Math.sin(angleRad)],
           [-Math.sin(angleRad), Math.cos(angleRad)]
         ])
-        var vector = Matrix.From(delta.map(n => [n]));
-        delta = transform.mul(vector).n[0];
+        for (let goal of this.goals) {
+          let goalVector = Matrix.From(goal.loc.map(n => [n]));
+          goal.loc = transform.mul(goalVector).n[0];
+        }
       }
 
       for (let i = 0; i < this.dim; ++i) {
