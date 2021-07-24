@@ -76,6 +76,11 @@ let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let levelChoiceDiv: HTMLDivElement;
 
+function levelButtonOnclick(ev: MouseEvent) {
+  const button = ev.target as HTMLButtonElement;
+  window.location.hash = button.innerText;
+}
+
 window.onload = () => {
   canvas = <HTMLCanvasElement>$('canvas')[0];
   resize();
@@ -89,7 +94,7 @@ window.onload = () => {
   for (let key in levels) {
     let button = document.createElement("button");
     button.innerText = key;
-    button.onclick = function (ev) { window.location.hash = this.innerText; };
+    button.onclick = levelButtonOnclick;
     levelChoiceDiv.appendChild(button);
   }
   levelChoiceDiv.style.position = "fixed";
