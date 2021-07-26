@@ -1,23 +1,18 @@
-/// <reference path="world.ts" />
-/// <reference path="topDownView.ts" />
-
-function assertThrow(message: string) {
-  debugger;
-  alert(message);
-  throw message;
-}
+import {TopDownView} from "./topDownView";
+import {World} from "./world";
 
 let game: World.Game;
 let drawer: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: World.Game) => void;
 
 let keydown: any = {};
 function keyName(event) {
-  return (<any>jQuery).hotkeys.specialKeys[event.which] ||
-    String.fromCharCode(event.which).toLowerCase();
+  return (
+    (<any>jQuery).hotkeys.specialKeys[event.which] || String.fromCharCode(event.which).toLowerCase()
+  );
 }
 
-$(document).bind("keydown", event => keydown[keyName(event)] = true);
-$(document).bind("keyup", event => keydown[keyName(event)] = false);
+$(document).bind("keydown", event => (keydown[keyName(event)] = true));
+$(document).bind("keyup", event => (keydown[keyName(event)] = false));
 
 function resize() {
   canvas.width = document.body.clientWidth;
@@ -41,14 +36,14 @@ function onResize() {
   if (!resizing) {
     resize();
     resizing = true;
-    setTimeout(() => resizing = false, 100);
+    setTimeout(() => (resizing = false), 100);
   }
 }
 
 let level = "";
 let levels = {
   "1d": TopDownView.Draw,
-  "2d": TopDownView.Draw
+  "2d": TopDownView.Draw,
 };
 
 function onHashChange(ev: HashChangeEvent) {
@@ -69,7 +64,7 @@ function onHashChange(ev: HashChangeEvent) {
   level = hash;
   game = new World.Game(+hash[0]);
   drawer = levels[hash];
-  levelChoiceDiv.style.display = 'none';
+  levelChoiceDiv.style.display = "none";
 }
 
 let canvas: HTMLCanvasElement;
@@ -82,13 +77,13 @@ function levelButtonOnclick(ev: MouseEvent) {
 }
 
 window.onload = () => {
-  canvas = <HTMLCanvasElement>$('canvas')[0];
+  canvas = <HTMLCanvasElement>$("canvas")[0];
   resize();
-  window.addEventListener('resize', onResize, false);
+  window.addEventListener("resize", onResize, false);
 
-  canvas.style.background = 'black';
-  ctx = canvas.getContext('2d');
-  ctx.font = '60px Verdana';
+  canvas.style.background = "black";
+  ctx = canvas.getContext("2d");
+  ctx.font = "60px Verdana";
 
   levelChoiceDiv = document.createElement("div");
   for (let key in levels) {

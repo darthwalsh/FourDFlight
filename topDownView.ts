@@ -1,9 +1,7 @@
-/// <reference path="world.ts" />
-module TopDownView {
-  export function Draw(
-    canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D,
-    game: World.Game) {
+import {World} from "./world";
+
+export module TopDownView {
+  export function Draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: World.Game) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const bound = 50;
@@ -24,8 +22,8 @@ module TopDownView {
   }
 
   function DrawCircle(ctx: CanvasRenderingContext2D, s: World.Shape, dx: number[], dy: number[]) {
-    let x = (s.loc[0] - dx[0]) / (dx[1] - dx[0]) * this.canvas.width;
-    let y = (s.loc.length > 1 ? ((s.loc[1] - dy[0]) / (dy[1] - dy[0])) : 0.5) * this.canvas.height;
+    let x = ((s.loc[0] - dx[0]) / (dx[1] - dx[0])) * this.canvas.width;
+    let y = (s.loc.length > 1 ? (s.loc[1] - dy[0]) / (dy[1] - dy[0]) : 0.5) * this.canvas.height;
     ctx.arc(x, y, s.size, 0, 2 * Math.PI);
     ctx.fill();
   }

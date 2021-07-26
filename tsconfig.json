@@ -1,9 +1,11 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "sourceMap": true,
-        "outFile": "./build.js",
-        "watch": true,
-        "noEmitOnError": true
-    }
+  "compilerOptions": {
+    "module": "amd",
+    "lib": ["DOM", "ES2015"],
+    "target": "es5",
+    "sourceMap": true,
+    "outFile": "./build.js",
+    "noEmitOnError": true
+  },
+  "exclude": ["spec/"]
 }

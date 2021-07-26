@@ -1,7 +1,9 @@
-/// <reference path="level.ts" />
 /// <reference path="matrix.ts" />
 
-module World {
+import {Matrix} from "./matrix";
+import {Level} from "./level";
+
+export module World {
   export class Shape {
     size: number;
     loc: number[];
@@ -20,8 +22,7 @@ module World {
     let aLocs = a.loc;
     let bLocs = b.loc;
 
-    if (aLocs.length != bLocs.length)
-      assertThrow(".length");
+    if (aLocs.length != bLocs.length) throw ".length not equal";
 
     //dist = sqrt((ax - bx)^2 + (ay - by)^2 + ...)
     let sum = 0;
@@ -56,8 +57,9 @@ module World {
     update(keydown: any) {
       ++this.tick;
       const tickFactor = 80;
-      this.goals.forEach(goal => goal.size = 40 -
-        Math.abs((this.tick % (2 * tickFactor)) - tickFactor) / 4);
+      this.goals.forEach(
+        goal => (goal.size = 40 - Math.abs((this.tick % (2 * tickFactor)) - tickFactor) / 4)
+      );
 
       let delta = this.makeArray(0);
 
@@ -86,12 +88,12 @@ module World {
           angle -= turnSpeed;
         }
 
-        // Transform 
-        let angleRad = angle * Math.PI / 180;
+        // Transform
+        let angleRad = (angle * Math.PI) / 180;
         var transform = Matrix.From([
           [Math.cos(angleRad), Math.sin(angleRad)],
-          [-Math.sin(angleRad), Math.cos(angleRad)]
-        ])
+          [-Math.sin(angleRad), Math.cos(angleRad)],
+        ]);
         for (let goal of this.goals) {
           let goalVector = Matrix.From(goal.loc.map(n => [n]));
           goal.loc = transform.mul(goalVector).n[0];
@@ -114,14 +116,13 @@ module World {
         ++this.level;
         this.updateGoal();
       }
-
     }
 
     private updateGoal() {
       const width = 100;
 
       let surface = Level.GetSurface(this.dim, this.level);
-      this.goals = surface.map(arr => new Shape(30, ...(arr.map(i => width * i))));
+      this.goals = surface.map(arr => new Shape(30, ...arr.map(i => width * i)));
     }
   }
 }
