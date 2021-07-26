@@ -1,6 +1,6 @@
 import "jasmine";
 
-import {Level} from "../level";
+import GetSurface from "../level.js";
 
 describe("Level", () => {
   const expected = [
@@ -48,7 +48,7 @@ describe("Level", () => {
 
   for (let i of expected) {
     it(`GetSurface(${i.d}, ${i.l}) should`, () => {
-      let actual = Level.GetSurface(i.d, i.l);
+      let actual = GetSurface(i.d, i.l);
       expect(actual).toEqual(i.e);
     });
   }

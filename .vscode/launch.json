@@ -2,20 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch with sourcemaps",
-      "type": "chrome",
+      "name": "Launch Chrome",
       "request": "launch",
-      "sourceMaps": true,
-      "webRoot": "${workspaceRoot}",
-      "file": "${workspaceFolder}/index.html"
-    },
-    {
-      /* need to run chome with command line --remote-debugging-port=9222 */
-      "name": "Attach with sourcemaps",
-      "type": "chrome",
-      "request": "attach",
-      "port": 9222,
-      "sourceMaps": true
+      "type": "pwa-chrome",
+      "url": "http://localhost:8088",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "parallel_watch_serve",
+      "runtimeArgs": ["--app=http://localhost:8088"]
     }
   ]
 }

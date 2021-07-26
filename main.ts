@@ -1,8 +1,8 @@
-import {TopDownView} from "./topDownView";
-import {World} from "./world";
+import TopDownDraw from "./topDownView.js";
+import {Game} from "./world.js";
 
-let game: World.Game;
-let drawer: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: World.Game) => void;
+let game: Game;
+let drawer: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: Game) => void;
 
 let keydown: any = {};
 function keyName(event) {
@@ -42,8 +42,8 @@ function onResize() {
 
 let level = "";
 let levels = {
-  "1d": TopDownView.Draw,
-  "2d": TopDownView.Draw,
+  "1d": TopDownDraw,
+  "2d": TopDownDraw,
 };
 
 function onHashChange(ev: HashChangeEvent) {
@@ -62,7 +62,7 @@ function onHashChange(ev: HashChangeEvent) {
   }
 
   level = hash;
-  game = new World.Game(+hash[0]);
+  game = new Game(+hash[0]);
   drawer = levels[hash];
   levelChoiceDiv.style.display = "none";
 }
