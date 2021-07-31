@@ -4,8 +4,8 @@
     "target": "ES6",
     "sourceMap": true,
     "outDir": "dist",
-    // "noImplicitAny": true,
-    // "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
     "strict": true,
     "noEmitOnError": true
   },

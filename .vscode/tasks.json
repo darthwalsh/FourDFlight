@@ -19,9 +19,14 @@
       "label": "tsc",
       "type": "shell",
       "command": "npx",
-      "args": ["tsc"],
+      "args": [
+        "tsc"
+      ],
       "problemMatcher": "$tsc",
-      "group": "build"
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "label": "parallel_watch_serve",
@@ -45,7 +50,7 @@
           "background": {
             "activeOnStart": true,
             "beginsPattern": ".",
-            "endsPattern": ".",
+            "endsPattern": "."
           }
         }
       ]
