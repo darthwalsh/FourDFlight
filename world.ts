@@ -34,7 +34,7 @@ function distance(a: Shape, b: Shape): number {
 
 export class Game {
   player: Shape;
-  goals: Shape[];
+  goals: Shape[] = [];
   dim: number;
   level = 1;
   tick = 0;

@@ -1,11 +1,12 @@
 import TopDownDraw from "./topDownView.js";
 import {Game} from "./world.js";
 
-let game: Game;
-let drawer: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: Game) => void;
+type DrawFunction = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: Game) => void;
+let drawer: DrawFunction;
+let game: Game | null;
 
 let keydown: any = {};
-function keyName(event) {
+function keyName(event: JQueryEventObject) {
   return (
     (<any>jQuery).hotkeys.specialKeys[event.which] || String.fromCharCode(event.which).toLowerCase()
   );
@@ -41,12 +42,12 @@ function onResize() {
 }
 
 let level = "";
-let levels = {
+let levels: {[key: string]: DrawFunction} = {
   "1d": TopDownDraw,
   "2d": TopDownDraw,
 };
 
-function onHashChange(ev: HashChangeEvent) {
+function onHashChange() {
   let hash = window.location.hash.substring(1);
 
   if (hash === "") {
@@ -82,7 +83,7 @@ window.onload = () => {
   window.addEventListener("resize", onResize, false);
 
   canvas.style.background = "black";
-  ctx = canvas.getContext("2d");
+  ctx = canvas.getContext("2d")!;
   ctx.font = "60px Verdana";
 
   levelChoiceDiv = document.createElement("div");
@@ -94,10 +95,10 @@ window.onload = () => {
   }
   levelChoiceDiv.style.position = "fixed";
   levelChoiceDiv.style.top = "100px";
-  canvas.parentElement.appendChild(levelChoiceDiv);
+  canvas.parentElement?.appendChild(levelChoiceDiv);
 
   window.onhashchange = onHashChange;
-  onHashChange(null);
+  onHashChange();
 
   let FPS = 60;
   setInterval(() => {
