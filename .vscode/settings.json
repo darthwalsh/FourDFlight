@@ -4,5 +4,9 @@
     "**/*.js": {"when": "$(basename).ts"},
     "**/*.js.map": true
   },
-  "jasmineExplorer.nodeArgv": ["-r", "ts-node/register"]
+  "jasmineExplorer.nodeArgv": [
+    "-r",
+    "ts-node/register"
+  ],
+  "cSpell.enabled": true
 }

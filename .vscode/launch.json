@@ -8,7 +8,7 @@
       "url": "http://localhost:8088",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "parallel_watch_serve",
-      "runtimeArgs": ["--app=http://localhost:8088"]
+      "runtimeArgs": ["--app=http://localhost:8088", "--disk-cache-size=1"]
     }
   ]
 }
