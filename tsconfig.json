@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "ES2015"],
+    "lib": ["DOM", "ES2017"],
     "target": "ES6",
     "sourceMap": true,
     "outDir": "dist",
