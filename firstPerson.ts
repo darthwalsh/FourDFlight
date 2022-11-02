@@ -29,3 +29,5 @@ export default function FirstPersonDraw(
     ctx.fill();
   });
 }
+
+// TODO delete https://github.com/darthwalsh/scriptgraphics when this is done
