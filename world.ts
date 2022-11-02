@@ -63,7 +63,7 @@ export class Game {
     let delta = this.makeArray(0);
 
     let speed = -10;
-    let turnSpeed = 5;
+    let turnSpeed = 1;
     if (keydown.left) {
       delta[0] -= speed;
     }

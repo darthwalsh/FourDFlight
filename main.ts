@@ -1,4 +1,5 @@
 import TopDownDraw from "./topDownView.js";
+import FirstPersonDraw from "./firstPerson.js";
 import {Game} from "./world.js";
 
 type DrawFunction = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, game: Game) => void;
@@ -41,30 +42,45 @@ function onResize() {
   }
 }
 
-let level = "";
-let levels: {[key: string]: DrawFunction} = {
-  "1d": TopDownDraw,
-  "2d": TopDownDraw,
+const levels = [
+  "1d-top",
+  "2d-top",
+  "2d-first",
+  "3d-first",
+  "3d-firstline",
+  "4d-firstline",
+];
+
+
+const drawers: {[key: string]: DrawFunction} = {
+  "top": TopDownDraw,
+  "first": FirstPersonDraw,
 };
 
 function onHashChange() {
   let hash = window.location.hash.substring(1);
 
   if (hash === "") {
-    level = "";
     game = null;
     levelChoiceDiv.style.display = "";
     return;
   }
 
-  if (!(hash in levels)) {
+  const match = /^(\d)d-(.*)$/.exec(hash);
+  if (!levels.includes(hash) || !match) {
     alert("Unknown level!");
     return;
   }
 
-  level = hash;
-  game = new Game(+hash[0]);
-  drawer = levels[hash];
+  const [, dim, drawName] = match;
+  
+  if (!(drawName in drawers)) {
+    alert("Unknown level!");
+    return;
+  }
+
+  game = new Game(Number(dim));
+  drawer = drawers[drawName];
   levelChoiceDiv.style.display = "none";
 }
 
@@ -87,9 +103,9 @@ window.onload = () => {
   ctx.font = "60px Verdana";
 
   levelChoiceDiv = document.createElement("div");
-  for (let key in levels) {
+  for (const level of levels) {
     let button = document.createElement("button");
-    button.innerText = key;
+    button.innerText = level;
     button.onclick = levelButtonOnclick;
     levelChoiceDiv.appendChild(button);
   }
